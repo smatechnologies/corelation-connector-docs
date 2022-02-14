@@ -143,6 +143,10 @@ You could specify:
 
 - **CorelationPort**: The port number to use for communications.  This value must match the port number configured in the Corelation server.
 
+- **UseSSL**: Configures the connection to use SSL. `true` and `false` are valid values.
+
+- **CorelationServerName**: When `UseSSL=true`, this value must be provided and match the server name on the certificate of the Corelation server.
+
 - **CorelationUser**: The user credentials to use to log into the Corelation server.
 
 - **CorelationPassword**: The password of the CorelationUser specified above.  Alternately, this can be the path and filename to an encrypted file (See [SMACreateCorelationPassword](create-password-file)).
@@ -164,6 +168,8 @@ You could specify:
 [ConnectionDetails]
 CorelationIPAddress=192.168.1.1
 CorelationPort=52007
+UseSSL=false
+CorelationServerName=N/A
 CorelationUser=youruser
 CorelationPassword=yourpassword
 CorelationDeviceName=system
