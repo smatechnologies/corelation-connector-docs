@@ -4,6 +4,16 @@ sidebar_label: 'Release notes'
 
 # Corelation Connector release notes
 
+## 22.2.0
+
+#### SMARunCorelationJob
+
+- **CONNUTIL-583**: Added config entry to specify TLS version number (TLS12,TLS11, TLS, or N/A).
+
+#### SMAExecuteKeystoneCommand
+
+- **CONNUTIL-579**: Added logic to avoid 'missing elements' error when Corelation software changes them between releases by specifying them in the connector config.
+
 ## 21.0.0
 
 #### SMARunCorelationJob
