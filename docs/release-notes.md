@@ -4,6 +4,12 @@ sidebar_label: "Release notes"
 
 # Corelation Connector release notes
 
+## 22.4.0
+
+#### SMARunCorelationJob
+
+- **CONNUTIL-631**: Bug fix to parse KeyStone xml response using Unix as well as Windows style life feed characters 
+
 ## 22.3.0
 
 #### SMARunCorelationJob
