@@ -31,8 +31,8 @@ module.exports = {
           breadcrumbs: false,
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl:
-            'https://github.com/smatechnologies/corelation-connector-docs/blob/main',
+//          editUrl:
+//            'https://github.com/smatechnologies/corelation-connector-docs/blob/main',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -44,11 +44,11 @@ module.exports = {
     ],
   ],
   plugins: [
-    [
-      require.resolve('@cmfcmf/docusaurus-search-local'), 
-      {
-   
-      }
-    ],
+//    [
+//      require.resolve('@cmfcmf/docusaurus-search-local'), 
+//      {
+//   
+//      }
+//    ],
   ],
 };
