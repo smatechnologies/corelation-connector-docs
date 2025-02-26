@@ -9,8 +9,8 @@ The Corelation Connector enables KeyStone jobs to be executed from OpCon. A job 
 
 The interface is made up of the following applications:
 
-- [SMARunCorelationJob.exe](run-corelation-job)
-- [SMAExecuteKeystoneCommand.exe](execute-keystone-command)
-- [SMADeleteKeyStoneFiles.exe](delete-keystone-files)
-- [SMACreateCorelationPasswordFile.exe](create-password-file)
-- [SMASumItems.exe](sum-items)
+- [SMARunCorelationJob.exe](/opcon/connectors/corelation/run-corelation-job)
+- [SMAExecuteKeystoneCommand.exe](/opcon/connectors/corelation/execute-keystone-command)
+- [SMADeleteKeyStoneFiles.exe](/opcon/connectors/corelation/delete-keystone-files)
+- [SMACreateCorelationPasswordFile.exe](/opcon/connectors/corelation/create-password-file)
+- [SMASumItems.exe](/opcon/connectors/corelation/sum-items)
