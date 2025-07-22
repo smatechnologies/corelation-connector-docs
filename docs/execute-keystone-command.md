@@ -526,6 +526,7 @@ LoginTimeoutSeconds=30
 CommandPrependString=keystone -xml <<eof-tag
 CommandAppendString=eof-tag 
 CorelationNameSpace=http://www.corelationinc.com/ns/administration/v1.0
+ElementExclusion=dbhomeMegabytes,softwareMegabytes,databaseMegabytes
 ```
 
 ## Reference
