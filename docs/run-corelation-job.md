@@ -13,6 +13,23 @@ This application starts and monitors a job that has been defined in the Corelati
 - **-batchservername**: An optional argument to allow the specification of the batch server.  If this is not specified, the name “Batch Server” will be used.
 
 - **-batchqueuename**: An optional argument to allow the specification of the batch queue to use.  If this is not specified, the name “Main Batch Queue” will be used.  This must be a valid queue name on the specified (or default) batch server.
+  
+  - `leastbusy` is now available as an additional option for the **batchqueuename** parameter
+    - `leastbusy` allows the connector to query the Corelation API to find the batch queue with the fewest jobs and enqueue the new job there
+    - If multiple queues are equally empty, the first returned by the API is selected
+  
+:::note
+
+- The Corelation Sub-Type configuration in Solution Manager now includes a checkbox to enable this functionality.
+- This checkbox ensures the process runs with **-BatchQueueName** `leastbusy`.
+
+Version Requirements:
+
+- Solution Manager v25.0+: Required to see and use the checkbox in the UI.
+- Corelation Connector v22.4.0+: Required to use the `leastbusy` option via command line.
+- Latest Connector Version (22.4.3): Includes a bug fix ensuring only “Open” queues are considered.
+
+:::
 
 - **-jobname**: The jobname to start.  Either the jobname or the jobserial must be specified.
 
