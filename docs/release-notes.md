@@ -4,6 +4,12 @@ sidebar_label: "Release notes"
 
 # Corelation Connector release notes
 
+## 22.4.3
+
+#### -BatchQueueName leastbusy
+
+- **INTPLT-367** The `leastbusy` Batch Queue option is now available as an option on the connector program. If the **-BatchQueueName** parameter has the value of “leastbusy”, then the connector will query the Corelation API for the set of open batch queues and enqueue the new job on the batch queue which has the least jobs enqueued. The Corelation Sub-Type configuration in Solution Manager now includes a checkbox to enable this functionality. This checkbox ensures the process runs with **-BatchQueueName** `leastbusy`.
+
 ## 22.4.0
 
 #### SMARunCorelationJob
