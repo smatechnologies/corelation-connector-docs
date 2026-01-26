@@ -4,6 +4,10 @@ sidebar_label: "Release notes"
 
 # Corelation Connector release notes
 
+## 26.0.0 
+#### -BatchQueueName leastbusy (updates)
+- **CON-807** added a shared mutex to make instances of SMARunCorelationJob take turns inspecting the queue and assigning work
+
 ## 22.4.3
 
 #### -BatchQueueName leastbusy
