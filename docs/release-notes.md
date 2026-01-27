@@ -8,6 +8,16 @@ sidebar_label: "Release notes"
 #### -BatchQueueName leastbusy (updates)
 - **CON-807** added a shared mutex to make instances of SMARunCorelationJob take turns inspecting the queue and assigning work
 
+#### Added SSL/TLS support for secure Corelation server connections.
+- **CON-815**
+New configuration parameters:
+  - UseSSL: Enable/disable SSL/TLS encryption (default: false)
+  - TLSVersion: Specify TLS protocol version (TLS, TLS11, TLS12, N/A)
+  - CorelationServerName: Server name for certificate validation
+Supported protocols: TLS 1.0, TLS 1.1, TLS 1.2, auto-negotiate (SSL 3.0, TLS 1.0-1.2)
+Feature parity with SMARunCorelationJob SSL implementation.
+Backward compatible: UseSSL=false maintains plain TCP behavior.
+
 ## 22.4.3
 
 #### -BatchQueueName leastbusy
