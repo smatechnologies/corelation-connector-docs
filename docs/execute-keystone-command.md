@@ -18,6 +18,7 @@ This application is a command line utility which allows the user to execute comm
   - restoreDatabase
   - purgeBackups
   - writeBackupsToMedia
+  - keyClone
 
 - **-ConfigFile**: Allows the user to specify a configuration file other than the default (SMAExecuteKeystoneCommand.ini). Optional.
 
@@ -119,11 +120,25 @@ When `-Command=writeBackupsToMedia`, the following options are valid:
 
 - **-comment**: You can optionally specify a comment of up to 200 characters that will be written to the header on the external media and is displayed when the external media is reloaded. Typically this is used to indicate the contents of the media, such as “2014-12 Month-End Backups”.
 
+#### keyClone
+
+When `-Command=keyClone`, the following options are valid:
+
+- **-databaseName**: This required directive indicates which database to perform the operation upon. The database must be a KeyClone database.
+
+- **-mode**: You can specify ***status***, ***continue*** or ***runstats*** (the default is ***status***). 
+  The status mode returns the status of the specified database.
+  The continue mode is a command to the Klone server to continue database synchronization after a pause.
+  The runstats mode runs database statistics on the specified database. This can take a few seconds to hours depending on the size of the database and the specified **priorRecordCountLimit** value.  
+
+- **-priorRecordCountLimit**: Used for ***runstats*** mode and optionally specifies that the system should only run statistics for tables where the previous statistics information indicates that the number of records in the table is less that the priorRecordCountLimit value. If you specify 0 or do not provide a value, then the internally defined value of 1,000,000 is used. If you specify -1 the system runs statistics on all tables. 
+
 ### Sample executions
 
 #### SMAExecuteKeystoneCommand.exe -Command=listDatabases
 
-```console
+```
+console
 Copyright Software Management and Associates - 2014
 Version 5.20.0.0
 
