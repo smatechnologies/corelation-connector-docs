@@ -1,6 +1,22 @@
+---
+title: SMADeleteKeyStoneFiles
+description: "Reference documentation for SMADeleteKeyStoneFiles, which deletes KeyStone export files from the remote server using SSH and the KeyStone web service."
+sidebar_label: SMADeleteKeyStoneFiles
+tags:
+  - Reference
+  - Automation Engineer
+  - Corelation Connector
+---
+
 # SMADeleteKeyStoneFiles
 
-This application sends the appropriate commands to KeyStone to update the database and delete the specified files.  It requires an SSH session to get the exact name of the files (that match the specified mask) and then uses the web service interface to request the file deletion(s) from KeyStone.
+## What is it?
+
+`SMADeleteKeyStoneFiles.exe` sends commands to KeyStone to delete specified export files from the remote server. The application uses an SSH session to identify files matching the specified mask, then uses the KeyStone web service interface to request the file deletions.
+
+- Use this application to automate cleanup of KeyStone export files as part of a scheduled OpCon workflow.
+- Use this application with the `-OnlyListFiles` option to audit which files match a given pattern before deleting them.
+- Use this application with SSL/TLS enabled to secure all communication with the Corelation server.
 
 ## Usage
 
@@ -254,3 +270,34 @@ The following TLS protocols are supported for secure Corelation web service conn
 :::note
 The SSL/TLS support applies only to the Corelation web service connection (KeyStone Connection Parameters). The SSH connection uses its own encryption as specified by the SSH encryption algorithms.
 :::
+
+## FAQs
+
+**How do I preview which files will be deleted before running a deletion?**
+Use the `-OnlyListFiles` option. The application lists all files matching the `FilenameMask` pattern and exits without deleting anything.
+
+**What is the difference between SSH connection parameters and KeyStone connection parameters?**
+SSH parameters (`HostName`, `Port`, `UserName`, `Password`, SSH algorithm settings) control the secure shell session used to list files on the remote server. KeyStone parameters (`CorelationIPAddress`, `CorelationPort`, `CorelationUser`, etc.) control the web service connection used to request the actual file deletions from KeyStone.
+
+**Do I need to enable SSL/TLS?**
+SSL/TLS for the KeyStone web service connection is optional but recommended for production environments. Set `UseSSL=true` and specify `TLSVersion` and `CorelationServerName` to enable it. The SSH connection is always encrypted regardless of this setting.
+
+**Which TLS version should I use?**
+Use `TLS12` for the highest security. Use `N/A` only if you need to support legacy Corelation servers or are unsure which TLS version the server supports.
+
+**How do I avoid storing passwords in plain text?**
+Use [SMACreateCorelationPasswordFile](./create-password-file.md) to create an encrypted password file, then set the `Password` (SSH) or `CorelationPassword` (KeyStone) field to the path of that file.
+
+## Glossary
+
+**FilenameMask** — A regular expression pattern used to select which files on the remote server to list or delete.
+
+**KeyStone export files** — Files written to the remote server by KeyStone operations such as database exports. `SMADeleteKeyStoneFiles` targets these files in the directory specified by `KeyStoneReportDirectory`.
+
+**KeyStoneReportDirectory** — The path on the remote server where KeyStone stores export files. Example: `/cr/dbhome/D0000T99/export`.
+
+**ElementExclusion** — A configuration parameter that lists XML element names to ignore in KeyStone responses. See [SMAExecuteKeystoneCommand](./execute-keystone-command.md) for details.
+
+**SSH** — Secure Shell, the protocol used to connect to the remote server and list files matching the `FilenameMask`.
+
+**SSL/TLS** — The encryption protocol used for the KeyStone web service connection. Enabled by setting `UseSSL=true` in the KeyStone Connection Parameters section.
