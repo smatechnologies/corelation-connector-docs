@@ -1,16 +1,42 @@
 ---
 slug: '/'
-sidebar_label: 'Corelation Connector'
+hide_table_of_contents: true
+displayed_sidebar: null
 ---
 
 # Corelation Connector
 
-The Corelation Connector enables KeyStone jobs to be executed from OpCon. A job can be specified by its name or its serial number and will be monitored until completion.
+The Corelation Connector enables KeyStone jobs to be run from OpCon.
 
-The interface is made up of the following applications:
+<div style={{display: 'flex', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap', marginTop: '1rem'}}>
 
-- [SMARunCorelationJob.exe](/opcon/connectors/corelation/run-corelation-job)
-- [SMAExecuteKeystoneCommand.exe](/opcon/connectors/corelation/execute-keystone-command)
-- [SMADeleteKeyStoneFiles.exe](/opcon/connectors/corelation/delete-keystone-files)
-- [SMACreateCorelationPasswordFile.exe](/opcon/connectors/corelation/create-password-file)
-- [SMASumItems.exe](/opcon/connectors/corelation/sum-items)
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
+
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
+
+### Overview
+
+- [Overview](./overview.md)
+- [Release Notes](./release-notes.md)
+
+</div>
+
+</div>
+
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
+
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
+
+### Applications
+
+- [SMARunCorelationJob](./run-corelation-job.md)
+- [SMAExecuteKeystoneCommand](./execute-keystone-command.md)
+- [SMADeleteKeyStoneFiles](./delete-keystone-files.md)
+- [SMACreateCorelationPasswordFile](./create-password-file.md)
+- [SMASumItems](./sum-items.md)
+
+</div>
+
+</div>
+
+</div>

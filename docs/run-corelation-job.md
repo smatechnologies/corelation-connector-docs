@@ -1,186 +1,108 @@
+---
+title: SMARunCorelationJob
+description: "Reference documentation for SMARunCorelationJob, which starts and monitors a KeyStone batch job from OpCon."
+sidebar_label: SMARunCorelationJob
+tags:
+  - Reference
+  - Automation Engineer
+  - Corelation Connector
+---
+
 # SMARunCorelationJob
 
-This application starts and monitors a job that has been defined in the Corelation database.  If the job is initiated and finishes with no exceptions, this application exits with a value of 0.
+## What is it?
+
+`SMARunCorelationJob.exe` starts and monitors a batch job defined in the Corelation KeyStone database. When the job completes without exceptions, the application exits with a value of `0`.
+
+- Use this application when you need to trigger a KeyStone batch job from an OpCon schedule.
+- Use this application to monitor job completion and capture the exit status for downstream dependencies.
+- Use this application with the `leastbusy` batch queue option to distribute load across available queues automatically.
 
 ## Usage
 
-`SMARunCorelationJob.exe -jobname myJob`
+```
+SMARunCorelationJob.exe -jobname myJob
+```
 
-### Command line options
+## Command-line options
 
-- **-configuration**: The name of the configuration file to use.  It is an optional parameter.  If no configuration file is specified, SMARunCorelationJob.ini (in the same directory as SMARunCorelationJob.exe) is assumed.
+| Option | Required | Description |
+|---|---|---|
+| `-jobname` | One of `-jobname` or `-jobserial` | The name of the KeyStone job to start. |
+| `-jobserial` | One of `-jobname` or `-jobserial` | The serial number of the KeyStone job to start. |
+| `-configuration` | No | The path to a configuration file. If not specified, `SMARunCorelationJob.ini` in the same directory is used. |
+| `-batchservername` | No | The name of the batch server. Default: `Batch Server`. |
+| `-batchqueuename` | No | The name of the batch queue. Default: `Main Batch Queue`. Accepts `leastbusy` to automatically select the queue with the fewest pending jobs. |
+| `-dumpxml` | No | Includes XML messages exchanged with the Corelation server in the job output. |
+| `-dumpjobdetails` | No | Displays job details and exits. Use with `-dumpxml` to see all job parameters. |
+| `-propertyowner` | No | Nests batch options under the specified property name in the generated XML. |
+| `-showjoblist` | No | Lists all batch jobs defined in the Corelation database. |
+| `-showviewsubmit` | No | Displays the response to the `VIEW_SUBMIT` call. The response to the actual submit is always shown when `-dumpxml` is active. |
+| `-arrayofparameters` | No | Specifies an array name and its values as `ArrayName\|Value1\|Value2`. |
+| `-batchoptions` | No | Specifies one or more property name/value pairs separated by `\|`. |
+| `-param1` through `-param99` | No | Specifies nested parameters. Format: `tag\|value` or `parent\|child\|value` for nested structures. |
+| `-debug` | No | Enables full debug output, including all XML exchanges and job status queries. |
 
-- **-batchservername**: An optional argument to allow the specification of the batch server.  If this is not specified, the name “Batch Server” will be used.
+### leastbusy batch queue option
 
-- **-batchqueuename**: An optional argument to allow the specification of the batch queue to use.  If this is not specified, the name “Main Batch Queue” will be used.  This must be a valid queue name on the specified (or default) batch server.
-  
-  - `leastbusy` is now available as an additional option for the **batchqueuename** parameter
-    - `leastbusy` allows the connector to query the Corelation API to find the batch queue with the fewest jobs and enqueue the new job there
-    - If multiple queues are equally empty, the first returned by the API is selected
-  
+When `-batchqueuename leastbusy` is specified, the connector queries the Corelation API for all open batch queues and enqueues the job on the queue with the fewest pending jobs. If multiple queues are equally empty, the first one returned by the API is selected.
+
 :::note
-
-- The Corelation Sub-Type configuration in Solution Manager now includes a checkbox to enable this functionality.
-- This checkbox ensures the process runs with **-BatchQueueName** `leastbusy`.
-
-Version Requirements:
-
-- Solution Manager v25.0+: Required to see and use the checkbox in the UI.
-- Corelation Connector v22.4.0+: Required to use the `leastbusy` option via command line.
-- Latest Connector Version (22.4.3): Includes a bug fix ensuring only “Open” queues are considered.
-
+- The Corelation Sub-Type configuration in Solution Manager includes a checkbox to enable this option. The checkbox requires Solution Manager 25.0 or later.
+- Corelation Connector version 22.4.0 or later is required to use `leastbusy` from the command line.
+- Version 22.4.3 includes a fix ensuring only open queues are considered.
 :::
 
-- **-jobname**: The jobname to start.  Either the jobname or the jobserial must be specified.
+### Specifying parameters with -batchoptions
 
-- **-jobserial**: The jobserial to start.  Either the jobname or the jobserial must be specified.
+The `-batchoptions` string uses `|` to separate name/value pairs:
 
-- **-dumpxml**: An optional argument Specifies that XML messages between SMARunCorelationJob and the Corelation server are included in the output.
-
-- **-dumpjobdetails**: This option directs SMARunCorelationJob to dump the job details and exit.  The –dumpxml directive should be specified in order to see the job details and their parameters (propterties).
-
-- **-propertyowner**: This is a temporary option to nest options under the specified property name.  
-
-:::info Example
-For example, “Verafin Extract” expects XML in the format:
-
-```xml
-     <property name="INTERFACE_OPTIONS"> 
-          <property name="DATE_0"> 
-               <contents>2017-01-01</contents> 
-          </property> 
-          <property name="DATE_1"> 
-               <contents>2017-01-04</contents> 
-          </property> 
-     </property> 
+```
+-batchoptions="IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2"
 ```
 
-This only affects properties specified with -batchoptions.
-:::
+Use `-propertyowner` to nest the options under a parent property:
 
-- **-showjoblist**: Instructs SMARunCorelationJob display all of the batch jobs that are defined in the Corelation database.
-
-- **-showviewsubmit**: This option instructs SMARunCorelationJob to show the response to the VIEW_SUBMIT of the job (Optional).   The response to the actual submit is always shown (when –dumpxml has been selected.)
-
-- **-arrayofparameters**: This string consists of an array name and its values.  
-
-:::info Example
-If this is specified:
-
-`-arrayofparameters="ArrayName|Value1|Value2”`
-
-The resultant XML would look like:
-
-```xml
-<property name="ArrayName" index="0" count="2">
-  <property name="ARGUMENT">
-    <contents>Value1</contents>
-  </property>
-</property>
-<property name="ArrayName" index="1" count="2">
-  <property name="ARGUMENT">
-    <contents>Value2</contents>
-  </property>
-</property>
+```
+-propertyowner="InterfaceOptions" -batchoptions="IMPORT_FILE_NAME|mytestfile.txt"
 ```
 
-:::
+### Specifying parameters with -arrayofparameters
 
-- **-batchoptions**: This string is composed of one or more property name/value combinations.  Each item is separated by a vertical pipe symbol.  
-
-:::info Example
-For example, the string to specify the value of mytestfile.txt for a property called IMPORT_FILE_NAME would look like:
-
-`“IMPORT_FILE_NAME|mytestfile.txt”`
-
-A second property (if required) could be added on by specifying:
-
-`“IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2”`
-
-The specification (above) would generate:
-
-```xml
-     <property name="IMPORT_FILE_NAME">
-       <contents>mytestfile.txt</contents>
-     </property>
-     <property name="Prop2">
-       <contents>Value2</contents>
-     </property>
+```
+-arrayofparameters="ArrayName|Value1|Value2"
 ```
 
-These options can be ‘grouped’ by specifying -propertyowner.
+### Specifying nested parameters with -param1 through -param99
 
-If the user ALSO specified `-propertyowner=”InterfaceOptions”`, the XML generated would look like:
-
-```xml
-          <property name="InterfaceOptions">
-       <property name="IMPORT_FILE_NAME">
-         <contents>mytestfile.txt</contents>
-       </property>
-       <property name="Prop2">
-         <contents>Value2</contents>
-       </property>
-     </property>
 ```
-
-:::
-
-- **-param1param99** This is an optional way of specifying parameters.   Some job parameters are “nested”.  Each parameter consists of multiple arguments.  The simplest format is “tag|value” (similar to batchoptions).  If this is a nested parameter, then the “parents” are specified as well.  
-
-:::info Example
-
-For example, to create the following structure:
-
-```xml
-          <batch>
-      <batchOptions>
-   <property name="alpha">
-     <property name="beta">
-            <property name="gamma">
-              <contents>value</contents>
-            </property>
-          </property>
-        </property>
-      </batchOptions>
-    </batch>
+-param1="alpha|beta|gamma|value"
 ```
-
-You could specify:
-
-`-param1=”apha|beta|gamma|value”`
-:::
-
-- **-debug**: This option turns on all debug print.  All XML is displayed.  This includes the series of queries and responses for the job status.
 
 ## Configuration file
 
-## Configuration file parameters
+The configuration file uses INI format. By default, `SMARunCorelationJob.exe` reads `SMARunCorelationJob.ini` from the same directory as the executable.
 
-- **CorelationIPAddress**: The DNS resolvable name or IP address of the Corelation server.
+### Configuration parameters
 
-- **CorelationPort**: The port number to use for communications.  This value must match the port number configured in the Corelation server.
-
-- **UseSSL**: Configures the connection to use SSL. `true` and `false` are valid values.
-
-- **CorelationServerName**: When `UseSSL=true`, this value must be provided and match the server name on the certificate of the Corelation server.
-
-- **CorelationUser**: The user credentials to use to log into the Corelation server.
-
-- **CorelationPassword**: The password of the CorelationUser specified above.  Alternately, this can be the path and filename to an encrypted file (See [SMACreateCorelationPassword](create-password-file)).
-
-- **CorelationDeviceName**: The device name associated with the Corelation server to log into.
-
-- **CorelationNameSpace**: The name of the XML namespace used by Corelation.  This value should not be changed unless SMA requests it to be changed.
-
-- **MillisecondsBetweenRetries**: If a connection cannot be made to a Corelation server, it will be retried MaximumNumberOfRetries times.  MillisecondsBetweenRetries specifies how long to “rest” (in Milliseconds) between connection attempts.  If this parameter is NOT specified in the configuration file, 60000 (one minute) will be used.
-
-- **MaximumNumberOfRetries**: If a connection cannot be made to a Corelation server, it will be retried MaximumNumberOfRetries times.  If this parameter is NOT specified in the configuration file, 30 will be used.
+| Parameter | Description |
+|---|---|
+| `CorelationIPAddress` | The DNS-resolvable hostname or IP address of the Corelation server. |
+| `CorelationPort` | The port number for communication with the Corelation server. |
+| `UseSSL` | Set to `true` to enable SSL/TLS encryption. Default: `false`. |
+| `CorelationServerName` | The server name for certificate validation. Required when `UseSSL=true`. |
+| `CorelationUser` | The username for authenticating to the Corelation server. |
+| `CorelationPassword` | The password for the Corelation user, or the path to an encrypted password file. See [SMACreateCorelationPasswordFile](./create-password-file.md). |
+| `CorelationDeviceName` | The device name associated with the Corelation server. |
+| `CorelationNameSpace` | The XML namespace used by Corelation. Do not change this value unless directed by SMA. |
+| `MillisecondsBetweenRetries` | The time in milliseconds to wait between connection attempts. Default: `60000` (one minute). |
+| `MaximumNumberOfRetries` | The maximum number of connection retry attempts. Default: `30`. |
 
 ### Sample configuration file
 
 ```ini
 #======================================================================
-# These are the parameters to drive SMARunCorelationJob.
+# SMARunCorelationJob configuration
 #======================================================================
 [ConnectionDetails]
 CorelationIPAddress=192.168.1.1
@@ -194,3 +116,30 @@ CorelationNameSpace=http://www.corelationinc.com/queryLanguage/v1.0
 MillisecondsBetweenRetries=10000
 MaximumNumberOfRetries=10
 ```
+
+## FAQs
+
+**Can I run a job by its serial number instead of its name?**
+Yes. Use `-jobserial` in place of `-jobname`. One of these two parameters is required.
+
+**What happens if the connection to the Corelation server fails?**
+The connector retries the connection up to `MaximumNumberOfRetries` times, waiting `MillisecondsBetweenRetries` milliseconds between each attempt. Both values are set in the configuration file.
+
+**How do I avoid storing passwords in plain text?**
+Use [SMACreateCorelationPasswordFile](./create-password-file.md) to create an encrypted password file, then set `CorelationPassword` to the path of that file.
+
+**How does leastbusy select a queue?**
+The connector calls the Corelation API to retrieve all open batch queues, then selects the one with the fewest pending jobs. If multiple queues have the same count, the first queue returned by the API is used.
+
+**What does exit code 0 mean?**
+The job completed on the Corelation server without exceptions.
+
+## Glossary
+
+**Batch queue** — A KeyStone construct that holds pending batch jobs for processing by the batch server.
+
+**Batch server** — The KeyStone component that processes batch jobs from the batch queue.
+
+**leastbusy** — A special value for `-batchqueuename` that instructs the connector to query all open queues and select the one with the fewest jobs.
+
+**CorelationNameSpace** — The XML namespace identifier used in all API requests to the Corelation server. This value is provided by Corelation and should not be changed.
