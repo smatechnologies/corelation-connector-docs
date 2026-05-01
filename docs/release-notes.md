@@ -16,22 +16,6 @@ tags:
 
 2025
 
-### What's new
-
-:eight_spoked_asterisk: **CON-815**: Added SSL/TLS support for secure connections to the Corelation server in `SMADeleteKeyStoneFiles`.
-
-New configuration parameters:
-
-- `UseSSL` — Enable or disable SSL/TLS encryption. Default: `false`.
-- `TLSVersion` — Specify the TLS protocol version: `TLS`, `TLS11`, `TLS12`, or `N/A` (auto-negotiate).
-- `CorelationServerName` — Server name for certificate validation. Required when `UseSSL=true`.
-
-Supported protocols: TLS 1.0, TLS 1.1, TLS 1.2, and auto-negotiate (SSL 3.0 through TLS 1.2). Setting `UseSSL=false` maintains backward-compatible plain TCP behavior.
-
-### Why this matters
-
-SSL/TLS support for `SMADeleteKeyStoneFiles` brings feature parity with `SMARunCorelationJob` and allows organizations to encrypt all Corelation connector traffic to meet security and compliance requirements.
-
 ### Bug fixes
 
 :white_check_mark: **CON-807**: Added a shared mutex to `SMARunCorelationJob` so that concurrent instances take turns inspecting the batch queue and assigning work when using the `leastbusy` option.
@@ -86,8 +70,6 @@ The `leastbusy` option distributes batch job load across available queues automa
 
 :eight_spoked_asterisk: **CONNUTIL-518**: Added support in `SMARunCorelationJob` for configuring the key exchange algorithm, MAC algorithm, and public key algorithm. Updated the nSoftware SSH library to version 20.
 
-:eight_spoked_asterisk: **CONNUTIL-518**: Updated the nSoftware SSH library to version 20 in `SMADeleteKeyStoneFiles` to support the same expanded algorithm set.
-
 ---
 
 ## 20
@@ -103,8 +85,6 @@ The `leastbusy` option distributes batch job load across available queues automa
 ### What's new
 
 :eight_spoked_asterisk: **ALCONN-351**: Updated the nSoftware SSH library to version 16 in `SMARunCorelationJob`.
-
-:eight_spoked_asterisk: **ALCONN-352**: Updated the nSoftware SSH library to version 16 in `SMADeleteKeyStoneFiles`.
 
 ---
 

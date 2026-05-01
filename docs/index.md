@@ -31,7 +31,6 @@ The Corelation Connector enables KeyStone jobs to be run from OpCon.
 
 - [SMARunCorelationJob](./run-corelation-job.md)
 - [SMAExecuteKeystoneCommand](./execute-keystone-command.md)
-- [SMADeleteKeyStoneFiles](./delete-keystone-files.md)
 - [SMACreateCorelationPasswordFile](./create-password-file.md)
 - [SMASumItems](./sum-items.md)
 
