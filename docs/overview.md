@@ -24,7 +24,6 @@ The connector interface consists of the following command-line applications:
 |---|---|
 | [SMARunCorelationJob](./run-corelation-job.md) | Starts and monitors a KeyStone batch job |
 | [SMAExecuteKeystoneCommand](./execute-keystone-command.md) | Runs KeyStone administrative commands over SSH |
-| [SMADeleteKeyStoneFiles](./delete-keystone-files.md) | Deletes KeyStone export files from the remote server |
 | [SMACreateCorelationPasswordFile](./create-password-file.md) | Creates an encrypted password file for use in configuration files |
 | [SMASumItems](./sum-items.md) | Sums numeric fields in an XML file and stores the result as an OpCon property |
 
@@ -34,7 +33,7 @@ The connector interface consists of the following command-line applications:
 KeyStone is the core banking platform provided by Corelation. The Corelation Connector communicates with KeyStone using its XML API over TCP/IP or SSH.
 
 **Does the connector support encrypted connections?**
-Yes. `SMARunCorelationJob` and `SMADeleteKeyStoneFiles` both support SSL/TLS connections to the Corelation server. Set `UseSSL=true` and specify a `TLSVersion` in the configuration file to enable encryption. `SMAExecuteKeystoneCommand` uses SSH for all communication, which is encrypted by default.
+Yes. `SMARunCorelationJob` supports SSL/TLS connections to the Corelation server. Set `UseSSL=true` and specify a `TLSVersion` in the configuration file to enable encryption. `SMAExecuteKeystoneCommand` uses SSH for all communication, which is encrypted by default.
 
 **Can I run a job by serial number instead of name?**
 Yes. `SMARunCorelationJob` accepts either `-jobname` or `-jobserial` to identify the job to run.
@@ -58,8 +57,8 @@ Solution Manager 25.0 or later is required to see and use the **-BatchQueueName 
 
 **MSGIN** — The OpCon message input directory. `SMASumItems` writes property values to OpCon by placing event messages in this directory.
 
-**SSH** — Secure Shell, a cryptographic network protocol used by `SMAExecuteKeystoneCommand` and `SMADeleteKeyStoneFiles` to connect to the remote KeyStone server.
+**SSH** — Secure Shell, a cryptographic network protocol used by `SMAExecuteKeystoneCommand` to connect to the remote KeyStone server.
 
-**SSL/TLS** — Secure Sockets Layer / Transport Layer Security, the encryption protocol used by `SMARunCorelationJob` and `SMADeleteKeyStoneFiles` to secure TCP connections to the Corelation server.
+**SSL/TLS** — Secure Sockets Layer / Transport Layer Security, the encryption protocol used by `SMARunCorelationJob` to secure TCP connections to the Corelation server.
 
 **OpCon property** — A named variable in OpCon that can be set and read by jobs and schedules. `SMASumItems` stores its computed total in an OpCon property for use by downstream jobs.
