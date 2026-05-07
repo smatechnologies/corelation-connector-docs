@@ -12,6 +12,14 @@ tags:
 
 ## 26
 
+### 26.0.1
+
+2026
+
+### Bug fixes
+
+:white_check_mark: **CON-1542**: Fixed a timeout failure in `SMADeleteKeyStoneFiles` that could occur when the KeyStone export directory contains a large number of files (approximately 25,000 or more). The connector now retrieves file listings more efficiently, reducing the amount of data being transferred and preventing the operation from exceeding the configured timeout.
+
 ### 26.0.0
 
 2025
