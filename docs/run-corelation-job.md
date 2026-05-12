@@ -61,11 +61,50 @@ The `-batchoptions` string uses `|` to separate name/value pairs:
 -batchoptions="IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2"
 ```
 
+The connector generates the following XML:
+
+```xml
+<property name="IMPORT_FILE_NAME">
+  <contents>mytestfile.txt</contents>
+</property>
+<property name="Prop2">
+  <contents>Value2</contents>
+</property>
+```
+
 Use `-propertyowner` to nest the options under a parent property:
 
 ```
--propertyowner="InterfaceOptions" -batchoptions="IMPORT_FILE_NAME|mytestfile.txt"
+-propertyowner="InterfaceOptions" -batchoptions="IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2"
 ```
+
+The connector generates the following XML:
+
+```xml
+<property name="InterfaceOptions">
+  <property name="IMPORT_FILE_NAME">
+    <contents>mytestfile.txt</contents>
+  </property>
+  <property name="Prop2">
+    <contents>Value2</contents>
+  </property>
+</property>
+```
+
+Some jobs, such as Verafin Extract, require a specific parent property and nested child structure. For example, a Verafin Extract job expects this format:
+
+```xml
+<property name="INTERFACE_OPTIONS">
+  <property name="DATE_0">
+    <contents>2017-01-01</contents>
+  </property>
+  <property name="DATE_1">
+    <contents>2017-01-04</contents>
+  </property>
+</property>
+```
+
+To produce that structure, set `-propertyowner` to `INTERFACE_OPTIONS` and pass the date values through `-batchoptions`.
 
 ### Specifying parameters with -arrayofparameters
 
@@ -73,10 +112,41 @@ Use `-propertyowner` to nest the options under a parent property:
 -arrayofparameters="ArrayName|Value1|Value2"
 ```
 
+The connector generates the following XML:
+
+```xml
+<property name="ArrayName" index="0" count="2">
+  <property name="ARGUMENT">
+    <contents>Value1</contents>
+  </property>
+</property>
+<property name="ArrayName" index="1" count="2">
+  <property name="ARGUMENT">
+    <contents>Value2</contents>
+  </property>
+</property>
+```
+
 ### Specifying nested parameters with -param1 through -param99
 
 ```
 -param1="alpha|beta|gamma|value"
+```
+
+The connector generates the following XML:
+
+```xml
+<batch>
+  <batchOptions>
+    <property name="alpha">
+      <property name="beta">
+        <property name="gamma">
+          <contents>value</contents>
+        </property>
+      </property>
+    </property>
+  </batchOptions>
+</batch>
 ```
 
 ## Configuration file
