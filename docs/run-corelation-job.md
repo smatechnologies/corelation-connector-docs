@@ -55,25 +55,115 @@ When `-batchqueuename leastbusy` is specified, the connector queries the Corelat
 
 ### Specifying parameters with -batchoptions
 
-The `-batchoptions` string uses `|` to separate name/value pairs:
+The `-batchoptions` string uses `|` to separate name/value pairs. To set a property called `IMPORT_FILE_NAME` to the value `mytestfile.txt`:
+
+```
+-batchoptions="IMPORT_FILE_NAME|mytestfile.txt"
+```
+
+To add a second property, append another name/value pair:
 
 ```
 -batchoptions="IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2"
 ```
 
-Use `-propertyowner` to nest the options under a parent property:
+This generates the following XML:
+
+```xml
+<property name="IMPORT_FILE_NAME">
+  <contents>mytestfile.txt</contents>
+</property>
+<property name="Prop2">
+  <contents>Value2</contents>
+</property>
+```
+
+To group the options under a parent property, add `-propertyowner`:
 
 ```
--propertyowner="InterfaceOptions" -batchoptions="IMPORT_FILE_NAME|mytestfile.txt"
+-propertyowner="InterfaceOptions" -batchoptions="IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2"
 ```
+
+This generates:
+
+```xml
+<property name="InterfaceOptions">
+  <property name="IMPORT_FILE_NAME">
+    <contents>mytestfile.txt</contents>
+  </property>
+  <property name="Prop2">
+    <contents>Value2</contents>
+  </property>
+</property>
+```
+
+### Specifying parameters with -propertyowner
+
+`-propertyowner` nests the properties specified by `-batchoptions` under a named parent. For example, the `Verafin Extract` job expects XML in this format:
+
+```xml
+<property name="INTERFACE_OPTIONS">
+  <property name="DATE_0">
+    <contents>2017-01-01</contents>
+  </property>
+  <property name="DATE_1">
+    <contents>2017-01-04</contents>
+  </property>
+</property>
+```
+
+To produce that structure, combine `-propertyowner` with `-batchoptions`:
+
+```
+-propertyowner="INTERFACE_OPTIONS" -batchoptions="DATE_0|2017-01-01|DATE_1|2017-01-04"
+```
+
+`-propertyowner` only affects properties specified with `-batchoptions`.
 
 ### Specifying parameters with -arrayofparameters
+
+`-arrayofparameters` takes an array name followed by its values, separated by `|`:
 
 ```
 -arrayofparameters="ArrayName|Value1|Value2"
 ```
 
+This generates the following XML:
+
+```xml
+<property name="ArrayName" index="0" count="2">
+  <property name="ARGUMENT">
+    <contents>Value1</contents>
+  </property>
+</property>
+<property name="ArrayName" index="1" count="2">
+  <property name="ARGUMENT">
+    <contents>Value2</contents>
+  </property>
+</property>
+```
+
 ### Specifying nested parameters with -param1 through -param99
+
+`-param1` through `-param99` specify nested parameters. The simplest format is `tag|value` (similar to `-batchoptions`). For nested parameters, include the parent tags in order: `parent1|parent2|...|tag|value`.
+
+For example, to generate the following structure:
+
+```xml
+<batch>
+  <batchOptions>
+    <property name="alpha">
+      <property name="beta">
+        <property name="gamma">
+          <contents>value</contents>
+        </property>
+      </property>
+    </property>
+  </batchOptions>
+</batch>
+```
+
+Specify:
 
 ```
 -param1="alpha|beta|gamma|value"
