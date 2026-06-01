@@ -133,6 +133,25 @@ When `-Command=keyClone`, the following options are valid:
 
 - **-priorRecordCountLimit**: Used for ***runstats*** mode and optionally specifies that the system should only run statistics for tables where the previous statistics information indicates that the number of records in the table is less that the priorRecordCountLimit value. If you specify 0 or do not provide a value, then the internally defined value of 1,000,000 is used. If you specify -1 the system runs statistics on all tables. 
 
+Responses
+
+- success  Yes or No
+
+- submitted mode **status**
+  Status   Connecting, Synchronizing, Puased, Read Failed, Write Failed, Stopped 
+
+           Connecting    | The Klone Server is connecting to the source database.
+           Synchronizing | The Klone Server is reading the source database logs and applying the changes to the KeyClone database.
+           Paused        | The Klone Server has paused synchronization as of the end of a business day and will not continue until it receives a “continue” command.
+           Read Failed   | The Klone Server has encountered an error while attempting to read the source database logs. 
+           Write Failed  | The Klone Server has encountered an error while attempting to update the KeyClone database. 
+           Stopped       | The Klone Server program has been shut down. 
+  
+  Current Time
+  Changed Time
+  Posting Date
+  Gap Seconds
+
 ### Sample executions
 
 #### SMAExecuteKeystoneCommand.exe -Command=listDatabases
