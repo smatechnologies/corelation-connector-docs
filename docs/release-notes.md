@@ -12,6 +12,14 @@ tags:
 
 ## 26
 
+### 26.0.1
+
+May 2026
+
+### What's new
+
+:white_check_mark: **CON-816**: Added KeyClone command to SMAExecuteKeystoneCommand.exe
+
 ### 26.0.0
 
 2025
