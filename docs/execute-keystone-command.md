@@ -1,6 +1,22 @@
+---
+title: SMAExecuteKeystoneCommand
+description: "Reference documentation for SMAExecuteKeystoneCommand, which runs KeyStone administrative commands over SSH from OpCon."
+sidebar_label: SMAExecuteKeystoneCommand
+tags:
+  - Reference
+  - Automation Engineer
+  - Corelation Connector
+---
+
 # SMAExecuteKeystoneCommand
 
-This application is a command line utility which allows the user to execute common Keystone commands from OpCon. This is accomplished by building an XML request packet and feeding it to the keystone application through a SSH session.  The application tries to format the information returned into a more readable format.
+## What is it?
+
+`SMAExecuteKeystoneCommand.exe` is a command-line utility that runs common KeyStone administrative commands from OpCon. The application builds an XML request packet and sends it to the KeyStone application over an SSH session, then formats the response for readability.
+
+- Use this application to automate KeyStone database backups, restores, and maintenance tasks from an OpCon schedule.
+- Use this application to list databases, backups, and HADR status without requiring a manual SSH session.
+- Use this application to clone databases using the KeyClone feature.
 
 ## Usage
 
@@ -575,3 +591,32 @@ There is also an `<optionsName>` element now in the `<restoreDatabase>` operatio
 ### Missing Element and ElementExclusion
 
 There is a hidden configuration option called ElementExclusion that can be added to the configuration file under Session Parameters. Simply add the following: `ElementExclusion=` to the bottom of your file and in a comma delimited list define the elements you wish to ignore. Typically this command is needed when encountering a `Missing Elements in one of the child items` error for a command such as `RestoreBackup` or `ListDatabase`. It is possible to disable some fields of the `RestoreBackup`, so some of the tags we search for are no longer returned by keystone. For example, the field `dbhomeMegabytes` may be disabled and not appear in the output, so it would be added to the exclusion list and ignored in the job. Another example is with `ListDatabase` where all your databases may have a `webapp` tag except for a Jasper database. So, adding `webapp` to the list would allow that job to proceed. Values can be added to ElementExclusion in a comma-delimited list.
+
+## FAQs
+
+**Which commands require a database name?**
+`backupDatabase`, `listHADRStatus`, `listRollforwardTimes`, `purgeBackups`, `restoreDatabase`, and `keyClone` all require `-databaseName`. `listBackups`, `listDatabases`, and `writeBackupsToMedia` have optional or no database name parameters.
+
+**What is the ElementExclusion option and when do I need it?**
+`ElementExclusion` is a configuration parameter under `[Session Parameters]` that lists XML element names to ignore in KeyStone responses. Use it when you encounter a `Missing Elements in one of the child items` error, which occurs when a KeyStone upgrade removes or disables a field that the connector expects. Add the missing field name to the comma-separated list.
+
+**How do I find the correct backup timestamp for a restore?**
+Run `SMAExecuteKeystoneCommand.exe -Command=listBackups -databaseName=YourDatabase` to retrieve a list of available backups and their timestamps. Use the timestamp value with `-sourceTimestamp` in the `restoreDatabase` command.
+
+**Can I restore a database to a point in time?**
+Yes. Set `-rollforwardTo=pointInTime` and specify either `-rollforwardTimestamp` (in `YYYYMMDDHHMMSS` format, UTC) or `-rollforwardEndOfBusinessDate` (in `yyyy-mm-dd` format).
+
+**What SSH encryption algorithms should I use with newer Corelation servers?**
+Newer Corelation SSH implementations may not support the older `diffie-hellman` key exchange algorithms. If you encounter connection errors, set `SSHKeyExchangeAlgorithms` to the ECDH and curve25519 algorithms only: `curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521`.
+
+## Glossary
+
+**KeyStone** — The core banking platform developed by Corelation, Inc. `SMAExecuteKeystoneCommand` submits XML commands to KeyStone over an SSH session.
+
+**optionsName** — A named set of backup or restore options configured within the KeyStone admin script. These options control backup products, compression, DBHome inclusion, and export destinations.
+
+**HADR** — High Availability Disaster Recovery, a Db2 feature used by KeyStone for database replication. The `listHADRStatus` command reports the current replication state.
+
+**ElementExclusion** — A configuration parameter that specifies XML element names to ignore in KeyStone responses. Used to prevent `Missing Elements` errors when KeyStone removes fields between releases.
+
+**rollforward** — The process of applying database transaction logs after a restore to bring the database to a specific point in time.

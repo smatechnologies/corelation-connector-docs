@@ -1,11 +1,15 @@
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+/** @type {import('@docusaurus/types').Config} */
+const config = {
   title: 'SMA Technologies Help',
   tagline: 'Corelation Connector',
   url: 'https://help.smatechnologies.com',
   baseUrl: '/opcon/connectors/corelation/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   favicon: 'img/favicon.ico',
   organizationName: 'smatechnologies',
   projectName: 'corelation-connector-docs',
@@ -28,11 +32,9 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          breadcrumbs: false,
+          breadcrumbs: true,
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-//          editUrl:
-//            'https://github.com/smatechnologies/corelation-connector-docs/blob/main',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -43,12 +45,6 @@ module.exports = {
       },
     ],
   ],
-  plugins: [
-//    [
-//      require.resolve('@cmfcmf/docusaurus-search-local'), 
-//      {
-//   
-//      }
-//    ],
-  ],
 };
+
+module.exports = config;

@@ -1,81 +1,97 @@
 ---
-sidebar_label: "Release notes"
+sidebar_label: Release notes
+title: Corelation Connector release notes
+description: "Version history and change details for the Corelation Connector, including new features, improvements, and bug fixes."
+tags:
+  - Reference
+  - Automation Engineer
+  - Corelation Connector
 ---
 
 # Corelation Connector release notes
 
-## 26.0.0 
-#### -BatchQueueName leastbusy (updates)
-- **CON-807** added a shared mutex to make instances of SMARunCorelationJob take turns inspecting the queue and assigning work
+## 26
 
-#### Added SSL/TLS support for secure Corelation server connections.
-- **CON-815**
-New configuration parameters:
-  - UseSSL: Enable/disable SSL/TLS encryption (default: false)
-  - TLSVersion: Specify TLS protocol version (TLS, TLS11, TLS12, N/A)
-  - CorelationServerName: Server name for certificate validation
-Supported protocols: TLS 1.0, TLS 1.1, TLS 1.2, auto-negotiate (SSL 3.0, TLS 1.0-1.2)
-Feature parity with SMARunCorelationJob SSL implementation.
-Backward compatible: UseSSL=false maintains plain TCP behavior.
+### 26.0.0
 
-## 22.4.3
+2025
 
-#### -BatchQueueName leastbusy
+### Bug fixes
 
-- **INTPLT-367** The `leastbusy` Batch Queue option is now available as an option on the connector program. If the **-BatchQueueName** parameter has the value of “leastbusy”, then the connector will query the Corelation API for the set of open batch queues and enqueue the new job on the batch queue which has the least jobs enqueued. The Corelation Sub-Type configuration in Solution Manager now includes a checkbox to enable this functionality. This checkbox ensures the process runs with **-BatchQueueName** `leastbusy`.
+:white_check_mark: **CON-807**: Added a shared mutex to `SMARunCorelationJob` so that concurrent instances take turns inspecting the batch queue and assigning work when using the `leastbusy` option.
 
-## 22.4.0
+---
 
-#### SMARunCorelationJob
+## 22
 
-- **CONNUTIL-631**: Bug fix to parse KeyStone xml response using Unix as well as Windows style life feed characters 
+### 22.4.3
 
-## 22.3.0
+### Bug fixes
 
-#### SMARunCorelationJob
+:white_check_mark: **INTPLT-367**: The `leastbusy` batch queue option now correctly filters to only open queues when selecting the least-busy queue. Previous versions could consider closed queues.
 
-- **CONNUTIL-609**: Existing implementation of Corelation connector required the user to configure the exact encryption level (SSL3.0, TLS 1.0, TLS1.1 or TLS1.2) being used by the server in the ini file used in the job. That is difficult to know for the implementation user and made it difficult to get the corelation job working without trying the possible combinations. Changed connector logic to use secure protocol level offered by server if not specifically configured (SSL3.0, TLS1.0-1.2) in the connector ini. Now the user can just leave the TLSVersion=N/A in the ini file (which is default) and it will automatically connect using the encryption level offered by server.
+### 22.4.0
 
-In case of SSL errors, the error message didn’t describe in detail if there was a problem with the certificate expiry date or hostname or revocation or something else that caused the connection to fail. Added more detailed logging for connection error information to help users figure out what the problem might be.
+### What's new
 
-## 22.2.0
+:eight_spoked_asterisk: **INTPLT-367**: Added `leastbusy` as an option for the `-BatchQueueName` parameter in `SMARunCorelationJob`. When specified, the connector queries the Corelation API for all open batch queues and enqueues the new job on the queue with the fewest jobs. The Corelation Sub-Type configuration in Solution Manager now includes a checkbox to enable this option.
 
-#### SMARunCorelationJob
+### Why this matters
 
-- **CONNUTIL-583**: Added config entry to specify TLS version number (TLS12,TLS11, TLS, or N/A).
+The `leastbusy` option distributes batch job load across available queues automatically, reducing contention during peak processing periods without requiring manual queue assignment.
 
-#### SMAExecuteKeystoneCommand
+### Bug fixes
 
-- **CONNUTIL-579**: Added logic to avoid 'missing elements' error when Corelation software changes them between releases by specifying them in the connector config.
+:white_check_mark: **CONNUTIL-631**: Fixed a parsing error in `SMARunCorelationJob` that occurred when the KeyStone XML response used Unix-style line feed characters instead of Windows-style carriage return and line feed.
 
-## 21.0.0
+### 22.3.0
 
-#### SMARunCorelationJob
+### What's new
 
-- **CONNUTIL-518**: Added support to configure key exchange algorithm, Mac algorithm, and public key algorithm. Upgraded nSoftware SSH to Version 20.
+:eight_spoked_asterisk: **CONNUTIL-609**: Changed `SMARunCorelationJob` to automatically negotiate the TLS protocol version offered by the server when `TLSVersion=N/A` is set in the configuration file. Previously, you had to specify the exact TLS version, which required trial and error to determine.
 
-#### SMADeleteKeyStoneFiles
+:eight_spoked_asterisk: **CONNUTIL-609**: Improved SSL error logging in `SMARunCorelationJob` to include specific details about certificate failures — such as expiry date, hostname mismatch, or revocation errors — to help identify connection problems faster.
 
-- **CONNUTIL-518**: Upgraded nSoftware SSH to Version 20 to add new algorithms.
+### 22.2.0
 
-## 20.0.1
+### What's new
 
-#### SMARunCorelationJob
+:eight_spoked_asterisk: **CONNUTIL-583**: Added a `TLSVersion` configuration option to `SMARunCorelationJob`, allowing you to specify the TLS protocol version (`TLS12`, `TLS11`, `TLS`, or `N/A`).
 
-- **ALCONN-353**: Added support for optionsName.
+:eight_spoked_asterisk: **CONNUTIL-579**: Added logic to `SMAExecuteKeystoneCommand` to handle XML element changes between Corelation software releases by specifying optional elements in the connector configuration, preventing `missing elements` errors after a Corelation upgrade.
 
-## 20.0.0
+---
 
-#### SMARunCorelationJob
+## 21
 
-- **ALCONN-351**: Upgraded nSoftware SSH to Version 16.
+### 21.0.0
 
-#### SMADeleteKeyStoneFiles
+### What's new
 
-- **ALCONN-352**: Upgraded nSoftware SSH to Version 16.
+:eight_spoked_asterisk: **CONNUTIL-518**: Added support in `SMARunCorelationJob` for configuring the key exchange algorithm, MAC algorithm, and public key algorithm. Updated the nSoftware SSH library to version 20.
 
-## 19.0.0
+---
 
-#### SMARunCorelationJob
+## 20
 
-- Added a DNS lookup if the CorelationIPAddress did not look like an IP Address.
+### 20.0.1
+
+### What's new
+
+:eight_spoked_asterisk: **ALCONN-353**: Added support for the `optionsName` parameter in `SMARunCorelationJob`.
+
+### 20.0.0
+
+### What's new
+
+:eight_spoked_asterisk: **ALCONN-351**: Updated the nSoftware SSH library to version 16 in `SMARunCorelationJob`.
+
+---
+
+## 19
+
+### 19.0.0
+
+### What's new
+
+:eight_spoked_asterisk: Added DNS lookup support to `SMARunCorelationJob` when the `CorelationIPAddress` value does not appear to be an IP address.
