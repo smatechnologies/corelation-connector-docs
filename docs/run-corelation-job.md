@@ -166,7 +166,7 @@ The configuration file uses INI format. By default, `SMARunCorelationJob.exe` re
 | `CorelationUser` | The username for authenticating to the Corelation server. |
 | `CorelationPassword` | The password for the Corelation user, or the path to an encrypted password file. See [SMACreateCorelationPasswordFile](./create-password-file.md). |
 | `CorelationDeviceName` | The device name associated with the Corelation server. |
-| `CorelationNameSpace` | The XML namespace used by Corelation. Do not change this value unless directed by SMA. |
+| `CorelationNameSpace` | The XML namespace used by Corelation. Do not change this value unless directed by Continuous. |
 | `MillisecondsBetweenRetries` | The time in milliseconds to wait between connection attempts. Default: `60000` (one minute). |
 | `MaximumNumberOfRetries` | The maximum number of connection retry attempts. Default: `30`. |
 

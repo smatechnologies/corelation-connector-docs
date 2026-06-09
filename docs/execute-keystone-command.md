@@ -517,7 +517,7 @@ Connection details can be obtained from Corelation.
 - **SSHKeyExchangeAlgorithms**: The key exchange algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
 :::note
-Never instances of SSH used by Corelation may not support any of the diffie-hellman based algorithms.  If that occurs then set SSHKeyExchangeAlgorithms to:
+Newer instances of SSH used by Corelation may not support any of the diffie-hellman based algorithms.  If that occurs then set SSHKeyExchangeAlgorithms to:
 
 `SSHKeyExchangeAlgorithms=curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521`
 :::
