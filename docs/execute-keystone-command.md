@@ -522,7 +522,11 @@ Never instances of SSH used by Corelation may not support any of the diffie-hell
 `SSHKeyExchangeAlgorithms=curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521`
 :::
 
-- **SSHMacAlgorithms**: The Mac algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
+- **SSHMacAlgoritms**: The MAC algorithms to select from that can be negotiated for the connection. The supported protocols are shown below. Specify as a comma-separated string.
+
+:::note
+The INI key name is `SSHMacAlgoritms` (not `SSHMacAlgorithms`). Use this exact spelling in your configuration file. Using `SSHMacAlgorithms` (with the letter 'h') will be silently ignored by the connector.
+:::
 
 - **SSHPublicKeyAlgorithms**: The public key algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
@@ -537,19 +541,19 @@ The dollar sign ($) is used to match end of line.  To match a literal dollar sig
 - **CommandPrependString**: The text to be submitted immediately before the generated XML sequence.  
 
 :::caution
-This should not be changed (unless directed to by SMA).
+This should not be changed (unless directed to by Continuous).
 :::
 
 - **CommandAppendString**: The text to be submitted immediately after the generated XML sequence.
 
 :::caution
-This should not be changed (unless directed to by SMA).
+This should not be changed (unless directed to by Continuous).
 :::
 
 - **CorelationNameSpace**: This is the XML NameSpace used by this Corelation interface.  The value should be `“http://www.corelationinc.com/ns/administration/v1.0”`.
 
 :::caution
-This should not be changed (unless directed to by SMA).  
+This should not be changed (unless directed to by Continuous).  
 :::
 
 ### Sample configuration file

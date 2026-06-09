@@ -40,7 +40,8 @@ SMARunCorelationJob.exe -jobname myJob
 | `-showviewsubmit` | No | Displays the response to the `VIEW_SUBMIT` call. The response to the actual submit is always shown when `-dumpxml` is active. |
 | `-arrayofparameters` | No | Specifies an array name and its values as `ArrayName\|Value1\|Value2`. |
 | `-batchoptions` | No | Specifies one or more property name/value pairs separated by `\|`. |
-| `-param1` through `-param99` | No | Specifies nested parameters. Format: `tag\|value` or `parent\|child\|value` for nested structures. |
+| `-param0` through `-param99` | No | Specifies nested parameters. Format: `tag\|value` or `parent\|child\|value` for nested structures. |
+| `-queueselectionmutextimeout` | No | The time in milliseconds that a concurrent `leastbusy` instance waits to acquire the shared mutex before timing out. Default: `1200000` (20 minutes). Only applies when using the `leastbusy` batch queue option. |
 | `-debug` | No | Enables full debug output, including all XML exchanges and job status queries. |
 
 ### leastbusy batch queue option
@@ -51,6 +52,7 @@ When `-batchqueuename leastbusy` is specified, the connector queries the Corelat
 - The Corelation Sub-Type configuration in Solution Manager includes a checkbox to enable this option. The checkbox requires Solution Manager 25.0 or later.
 - Corelation Connector version 22.4.0 or later is required to use `leastbusy` from the command line.
 - Version 22.4.3 includes a fix ensuring only open queues are considered.
+- When multiple instances run concurrently with `leastbusy`, they use a shared mutex to synchronize queue selection and job submission. Use `-queueselectionmutextimeout` to control how long each instance waits to acquire the mutex. The default is 20 minutes (1,200,000 ms).
 :::
 
 ### Specifying parameters with -batchoptions
@@ -127,7 +129,7 @@ The connector generates the following XML:
 </property>
 ```
 
-### Specifying nested parameters with -param1 through -param99
+### Specifying nested parameters with -param0 through -param99
 
 ```
 -param1="alpha|beta|gamma|value"
