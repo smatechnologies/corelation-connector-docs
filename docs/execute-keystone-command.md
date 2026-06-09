@@ -522,11 +522,7 @@ Newer instances of SSH used by Corelation may not support any of the diffie-hell
 `SSHKeyExchangeAlgorithms=curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521`
 :::
 
-- **SSHMacAlgoritms**: The MAC algorithms to select from that can be negotiated for the connection. The supported protocols are shown below. Specify as a comma-separated string.
-
-:::note
-The INI key name is `SSHMacAlgoritms` (not `SSHMacAlgorithms`). Use this exact spelling in your configuration file. Using `SSHMacAlgorithms` (with the letter 'h') will be silently ignored by the connector.
-:::
+- **SSHMacAlgorithms**: The Mac algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
 - **SSHPublicKeyAlgorithms**: The public key algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
