@@ -510,7 +510,7 @@ Connection details can be obtained from Corelation.
 
 - **UserName**: The user credentials to use to log into the remote system.
 
-- **Password**: This is the password of the User specified above.  Alternately, this can be the path and filename to an encrypted file (See [SMACreatePassword](create-password-file)).
+- **Password**: This is the password of the User specified above.  Alternately, this can be the path and filename to an encrypted file (See [SMACreateCorelationPasswordFile](./create-password-file.md)).
 
 - **SSHEncryptionAlgorithms**: The encryption algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
@@ -609,7 +609,7 @@ There is also an `<optionsName>` element now in the `<restoreDatabase>` operatio
 
 ### Missing Element and ElementExclusion
 
-There is a hidden configuration option called ElementExclusion that can be added to the configuration file under Session Parameters. Simply add the following: `ElementExclusion=` to the bottom of your file and in a comma delimited list define the elements you wish to ignore. Typically this command is needed when encountering a `Missing Elements in one of the child items` error for a command such as `RestoreBackup` or `ListDatabase`. It is possible to disable some fields of the `RestoreBackup`, so some of the tags we search for are no longer returned by keystone. For example, the field `dbhomeMegabytes` may be disabled and not appear in the output, so it would be added to the exclusion list and ignored in the job. Another example is with `ListDatabase` where all your databases may have a `webapp` tag except for a Jasper database. So, adding `webapp` to the list would allow that job to proceed. Values can be added to ElementExclusion in a comma-delimited list.
+There is a hidden configuration option called ElementExclusion that can be added to the configuration file under Session Parameters. Simply add the following: `ElementExclusion=` to the bottom of your file and in a comma delimited list define the elements you wish to ignore. Typically this command is needed when encountering a `Missing Elements in one of the child items` error for a command such as `RestoreBackup` or `ListDatabase`. It is possible to disable some fields of the `RestoreBackup`, so some of the tags the connector searches for are no longer returned by KeyStone. For example, the field `dbhomeMegabytes` may be disabled and not appear in the output, so it would be added to the exclusion list and ignored in the job. Another example is with `ListDatabase` where all your databases may have a `webapp` tag except for a Jasper database. So, adding `webapp` to the list would allow that job to proceed. Values can be added to ElementExclusion in a comma-delimited list.
 
 ## FAQs
 

@@ -203,8 +203,8 @@ Use [SMACreateCorelationPasswordFile](./create-password-file.md) to create an en
 **How does leastbusy select a queue?**
 The connector calls the Corelation API to retrieve all open batch queues, then selects the one with the fewest pending jobs. If multiple queues have the same count, the first queue returned by the API is used.
 
-**What does exit code 0 mean?**
-The job completed on the Corelation server without exceptions.
+**What do the exit codes mean?**
+Exit code `0` means the job completed on the Corelation server without exceptions. Exit code `1` means the job failed or an error occurred — check the job output log for details.
 
 ## Glossary
 

@@ -16,7 +16,7 @@ The Corelation Connector enables KeyStone jobs to be run from OpCon. A job can b
 
 - Use this connector when you need to trigger and track KeyStone batch jobs from an OpCon schedule.
 - Use this connector to integrate Corelation core banking operations into a broader automated workflow.
-- Use this connector to manage KeyStone database administration tasks — backups, restores, and file deletions — from a single scheduling platform.
+- Use this connector to manage KeyStone database administration tasks — backups and restores — from a single scheduling platform.
 
 The connector interface consists of the following command-line applications:
 
