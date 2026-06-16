@@ -18,7 +18,7 @@ tags:
 
 ### Bug fixes
 
-:white_check_mark: **CON-1542**: Fixed timeout failures and missing file cleanup in `SMADeleteKeyStoneFiles` when the KeyStone export directory contains a large number of files. The connector now lists only files matching the specified mask instead of the entire directory, completing in seconds regardless of directory size. Additionally, the connector now removes matched files from the filesystem after their Corelation database records are deleted. Previously, only database records were removed and physical files accumulated indefinitely. The job log now reports file counts at each processing stage for operational visibility.
+:white_check_mark: **CON-1542**: Fixed a timeout failure in `SMADeleteKeyStoneFiles` that occurred when the KeyStone export directory contained a large number of files (~25,000+). The SSH listing now uses a targeted glob to retrieve only matching files instead of the entire directory. Added automatic fallback if the glob exceeds the shell's argument limit. Additionally, matched files are now deleted from the filesystem via SSH after their Corelation DB records are removed, using batched commands with per-batch logging.
 
 ### 26.0.0
 
