@@ -14,11 +14,11 @@ tags:
 
 ### 26.0.1
 
-May 2026
+2026
 
-### What's new
+### Bug fixes
 
-:white_check_mark: **CON-816**: Added KeyClone command to SMAExecuteKeystoneCommand.exe
+:white_check_mark: **CON-1542**: Fixed a timeout failure in `SMADeleteKeyStoneFiles` that occurred when the KeyStone export directory contained a large number of files (~25,000+). The SSH listing now uses a targeted glob to retrieve only matching files instead of the entire directory. Added automatic fallback if the glob exceeds the shell's argument limit. Additionally, matched files are now deleted from the filesystem via SSH after their Corelation DB records are removed, using batched commands with per-batch logging.
 
 ### 26.0.0
 
