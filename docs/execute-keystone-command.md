@@ -149,6 +149,25 @@ When `-Command=keyClone`, the following options are valid:
 
 - **-priorRecordCountLimit**: Used for ***runstats*** mode and optionally specifies that the system should only run statistics for tables where the previous statistics information indicates that the number of records in the table is less that the priorRecordCountLimit value. If you specify 0 or do not provide a value, then the internally defined value of 1,000,000 is used. If you specify -1 the system runs statistics on all tables. 
 
+Responses
+
+- success  Yes or No
+
+- submitted mode **status**
+  Status   Connecting, Synchronizing, Puased, Read Failed, Write Failed, Stopped 
+
+           Connecting    | The Klone Server is connecting to the source database.
+           Synchronizing | The Klone Server is reading the source database logs and applying the changes to the KeyClone database.
+           Paused        | The Klone Server has paused synchronization as of the end of a business day and will not continue until it receives a “continue” command.
+           Read Failed   | The Klone Server has encountered an error while attempting to read the source database logs. 
+           Write Failed  | The Klone Server has encountered an error while attempting to update the KeyClone database. 
+           Stopped       | The Klone Server program has been shut down. 
+  
+  Current Time
+  Changed Time
+  Posting Date
+  Gap Seconds
+
 ### Sample executions
 
 #### SMAExecuteKeystoneCommand.exe -Command=listDatabases
@@ -491,14 +510,14 @@ Connection details can be obtained from Corelation.
 
 - **UserName**: The user credentials to use to log into the remote system.
 
-- **Password**: This is the password of the User specified above.  Alternately, this can be the path and filename to an encrypted file (See [SMACreatePassword](create-password-file)).
+- **Password**: This is the password of the User specified above.  Alternately, this can be the path and filename to an encrypted file (See [SMACreateCorelationPasswordFile](./create-password-file.md)).
 
 - **SSHEncryptionAlgorithms**: The encryption algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
 - **SSHKeyExchangeAlgorithms**: The key exchange algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
 :::note
-Never instances of SSH used by Corelation may not support any of the diffie-hellman based algorithms.  If that occurs then set SSHKeyExchangeAlgorithms to:
+Newer instances of SSH used by Corelation may not support any of the diffie-hellman based algorithms.  If that occurs then set SSHKeyExchangeAlgorithms to:
 
 `SSHKeyExchangeAlgorithms=curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521`
 :::
@@ -518,19 +537,19 @@ The dollar sign ($) is used to match end of line.  To match a literal dollar sig
 - **CommandPrependString**: The text to be submitted immediately before the generated XML sequence.  
 
 :::caution
-This should not be changed (unless directed to by SMA).
+This should not be changed (unless directed to by Continuous).
 :::
 
 - **CommandAppendString**: The text to be submitted immediately after the generated XML sequence.
 
 :::caution
-This should not be changed (unless directed to by SMA).
+This should not be changed (unless directed to by Continuous).
 :::
 
 - **CorelationNameSpace**: This is the XML NameSpace used by this Corelation interface.  The value should be `“http://www.corelationinc.com/ns/administration/v1.0”`.
 
 :::caution
-This should not be changed (unless directed to by SMA).  
+This should not be changed (unless directed to by Continuous).  
 :::
 
 ### Sample configuration file
@@ -590,7 +609,7 @@ There is also an `<optionsName>` element now in the `<restoreDatabase>` operatio
 
 ### Missing Element and ElementExclusion
 
-There is a hidden configuration option called ElementExclusion that can be added to the configuration file under Session Parameters. Simply add the following: `ElementExclusion=` to the bottom of your file and in a comma delimited list define the elements you wish to ignore. Typically this command is needed when encountering a `Missing Elements in one of the child items` error for a command such as `RestoreBackup` or `ListDatabase`. It is possible to disable some fields of the `RestoreBackup`, so some of the tags we search for are no longer returned by keystone. For example, the field `dbhomeMegabytes` may be disabled and not appear in the output, so it would be added to the exclusion list and ignored in the job. Another example is with `ListDatabase` where all your databases may have a `webapp` tag except for a Jasper database. So, adding `webapp` to the list would allow that job to proceed. Values can be added to ElementExclusion in a comma-delimited list.
+There is a hidden configuration option called ElementExclusion that can be added to the configuration file under Session Parameters. Simply add the following: `ElementExclusion=` to the bottom of your file and in a comma delimited list define the elements you wish to ignore. Typically this command is needed when encountering a `Missing Elements in one of the child items` error for a command such as `RestoreBackup` or `ListDatabase`. It is possible to disable some fields of the `RestoreBackup`, so some of the tags the connector searches for are no longer returned by KeyStone. For example, the field `dbhomeMegabytes` may be disabled and not appear in the output, so it would be added to the exclusion list and ignored in the job. Another example is with `ListDatabase` where all your databases may have a `webapp` tag except for a Jasper database. So, adding `webapp` to the list would allow that job to proceed. Values can be added to ElementExclusion in a comma-delimited list.
 
 ## FAQs
 

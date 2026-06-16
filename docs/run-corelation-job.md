@@ -40,7 +40,8 @@ SMARunCorelationJob.exe -jobname myJob
 | `-showviewsubmit` | No | Displays the response to the `VIEW_SUBMIT` call. The response to the actual submit is always shown when `-dumpxml` is active. |
 | `-arrayofparameters` | No | Specifies an array name and its values as `ArrayName\|Value1\|Value2`. |
 | `-batchoptions` | No | Specifies one or more property name/value pairs separated by `\|`. |
-| `-param1` through `-param99` | No | Specifies nested parameters. Format: `tag\|value` or `parent\|child\|value` for nested structures. |
+| `-param0` through `-param99` | No | Specifies nested parameters. Format: `tag\|value` or `parent\|child\|value` for nested structures. |
+| `-queueselectionmutextimeout` | No | The time in milliseconds that a concurrent `leastbusy` instance waits to acquire the shared mutex before timing out. Default: `1200000` (20 minutes). Only applies when using the `leastbusy` batch queue option. |
 | `-debug` | No | Enables full debug output, including all XML exchanges and job status queries. |
 
 ### leastbusy batch queue option
@@ -51,6 +52,7 @@ When `-batchqueuename leastbusy` is specified, the connector queries the Corelat
 - The Corelation Sub-Type configuration in Solution Manager includes a checkbox to enable this option. The checkbox requires Solution Manager 25.0 or later.
 - Corelation Connector version 22.4.0 or later is required to use `leastbusy` from the command line.
 - Version 22.4.3 includes a fix ensuring only open queues are considered.
+- When multiple instances run concurrently with `leastbusy`, they use a shared mutex to synchronize queue selection and job submission. Use `-queueselectionmutextimeout` to control how long each instance waits to acquire the mutex. The default is 20 minutes (1,200,000 ms).
 :::
 
 ### Specifying parameters with -batchoptions
@@ -61,11 +63,50 @@ The `-batchoptions` string uses `|` to separate name/value pairs:
 -batchoptions="IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2"
 ```
 
+The connector generates the following XML:
+
+```xml
+<property name="IMPORT_FILE_NAME">
+  <contents>mytestfile.txt</contents>
+</property>
+<property name="Prop2">
+  <contents>Value2</contents>
+</property>
+```
+
 Use `-propertyowner` to nest the options under a parent property:
 
 ```
--propertyowner="InterfaceOptions" -batchoptions="IMPORT_FILE_NAME|mytestfile.txt"
+-propertyowner="InterfaceOptions" -batchoptions="IMPORT_FILE_NAME|mytestfile.txt|Prop2|Value2"
 ```
+
+The connector generates the following XML:
+
+```xml
+<property name="InterfaceOptions">
+  <property name="IMPORT_FILE_NAME">
+    <contents>mytestfile.txt</contents>
+  </property>
+  <property name="Prop2">
+    <contents>Value2</contents>
+  </property>
+</property>
+```
+
+Some jobs, such as Verafin Extract, require a specific parent property and nested child structure. For example, a Verafin Extract job expects this format:
+
+```xml
+<property name="INTERFACE_OPTIONS">
+  <property name="DATE_0">
+    <contents>2017-01-01</contents>
+  </property>
+  <property name="DATE_1">
+    <contents>2017-01-04</contents>
+  </property>
+</property>
+```
+
+To produce that structure, set `-propertyowner` to `INTERFACE_OPTIONS` and pass the date values through `-batchoptions`.
 
 ### Specifying parameters with -arrayofparameters
 
@@ -73,10 +114,41 @@ Use `-propertyowner` to nest the options under a parent property:
 -arrayofparameters="ArrayName|Value1|Value2"
 ```
 
-### Specifying nested parameters with -param1 through -param99
+The connector generates the following XML:
+
+```xml
+<property name="ArrayName" index="0" count="2">
+  <property name="ARGUMENT">
+    <contents>Value1</contents>
+  </property>
+</property>
+<property name="ArrayName" index="1" count="2">
+  <property name="ARGUMENT">
+    <contents>Value2</contents>
+  </property>
+</property>
+```
+
+### Specifying nested parameters with -param0 through -param99
 
 ```
 -param1="alpha|beta|gamma|value"
+```
+
+The connector generates the following XML:
+
+```xml
+<batch>
+  <batchOptions>
+    <property name="alpha">
+      <property name="beta">
+        <property name="gamma">
+          <contents>value</contents>
+        </property>
+      </property>
+    </property>
+  </batchOptions>
+</batch>
 ```
 
 ## Configuration file
@@ -94,7 +166,7 @@ The configuration file uses INI format. By default, `SMARunCorelationJob.exe` re
 | `CorelationUser` | The username for authenticating to the Corelation server. |
 | `CorelationPassword` | The password for the Corelation user, or the path to an encrypted password file. See [SMACreateCorelationPasswordFile](./create-password-file.md). |
 | `CorelationDeviceName` | The device name associated with the Corelation server. |
-| `CorelationNameSpace` | The XML namespace used by Corelation. Do not change this value unless directed by SMA. |
+| `CorelationNameSpace` | The XML namespace used by Corelation. Do not change this value unless directed by Continuous. |
 | `MillisecondsBetweenRetries` | The time in milliseconds to wait between connection attempts. Default: `60000` (one minute). |
 | `MaximumNumberOfRetries` | The maximum number of connection retry attempts. Default: `30`. |
 
@@ -131,8 +203,8 @@ Use [SMACreateCorelationPasswordFile](./create-password-file.md) to create an en
 **How does leastbusy select a queue?**
 The connector calls the Corelation API to retrieve all open batch queues, then selects the one with the fewest pending jobs. If multiple queues have the same count, the first queue returned by the API is used.
 
-**What does exit code 0 mean?**
-The job completed on the Corelation server without exceptions.
+**What do the exit codes mean?**
+Exit code `0` means the job completed on the Corelation server without exceptions. Exit code `1` means the job failed or an error occurred — check the job output log for details.
 
 ## Glossary
 
