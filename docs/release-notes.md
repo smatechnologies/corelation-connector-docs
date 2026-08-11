@@ -12,6 +12,16 @@ tags:
 
 ## 26
 
+### 26.0.2
+
+2026
+
+### Bug fixes
+
+:white_check_mark: **CON-483**: Fixed intermittent `SMARunCorelationJob` failures on slow or unreliable networks, where the Corelation core completed a job but the connector could not return the result. The connector now applies a configurable read timeout (`ReceiveTimeoutMilliseconds`) so a silent or slow core is retried instead of the job hanging, and retries the batch server and queue reads with a bounded reconnect and resend (`ReceiveRetryMaxDelayMilliseconds` caps the backoff; `MaximumNumberOfRetries` bounds the attempts). `SUBMIT` is deliberately never retried, because resending could double-submit a batch, so it now fails cleanly on a lost response instead of crashing on an empty one. The read timeout is opt-in: the default of `0` preserves existing behavior, and the sample configuration recommends `60000`.
+
+:white_check_mark: **CON-1749**: Fixed message truncation in `SMARunCorelationJob` that affected messages containing non-ASCII characters. The connector now sizes the outbound buffer by the UTF-8 byte count instead of the UTF-16 character count, so these messages are transmitted without truncation. This fix is always in effect and requires no configuration.
+
 ### 26.0.1
 
 2026
