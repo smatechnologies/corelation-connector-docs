@@ -169,6 +169,8 @@ The configuration file uses INI format. By default, `SMARunCorelationJob.exe` re
 | `CorelationNameSpace` | The XML namespace used by Corelation. Do not change this value unless directed by Continuous. |
 | `MillisecondsBetweenRetries` | The time in milliseconds to wait between connection attempts. Default: `60000` (one minute). |
 | `MaximumNumberOfRetries` | The maximum number of connection retry attempts. Default: `30`. |
+| `ReceiveTimeoutMilliseconds` | The read timeout in milliseconds for a response from the Corelation server. `0` (the default) means no timeout and preserves the connector's prior behavior. Set a finite value so a silent or slow server is retried instead of the job hanging. Recommended: `60000`. |
+| `ReceiveRetryMaxDelayMilliseconds` | The ceiling in milliseconds for the backoff between receive retries. The wait starts at one second and doubles (1s, 2s, 4s, and so on) up to this cap. Default: `30000`. |
 
 ### Sample configuration file
 
@@ -187,6 +189,8 @@ CorelationDeviceName=system
 CorelationNameSpace=http://www.corelationinc.com/queryLanguage/v1.0
 MillisecondsBetweenRetries=10000
 MaximumNumberOfRetries=10
+ReceiveTimeoutMilliseconds=60000
+ReceiveRetryMaxDelayMilliseconds=30000
 ```
 
 ## FAQs
