@@ -39,10 +39,14 @@ Set the `CorelationPassword` or `Password` field in any Corelation Connector con
 Only if both connections use the same password. Otherwise, create separate encrypted files for each credential and reference them in the corresponding configuration sections.
 
 **Is the encrypted file portable between machines?**
-The encryption is tied to the machine where the file was created. Create the encrypted file on the machine where the connector runs.
+Yes. The same encrypted file can be used on any machine running the connector, so you do not need to create one per server.
+
+:::caution
+Because the file is portable, it must be protected like the password itself. Anyone who obtains a copy of the file and has the connector software can recover the password from it. Restrict the file using file system permissions, and do not include it in backups, shares or tickets that a wider audience can read.
+:::
 
 ## Glossary
 
-**Encrypted password file** — A file produced by `SMACreateCorelationPasswordFile` that stores a password in encrypted form. Connector applications decrypt the file at runtime using the same machine-specific key.
+**Encrypted password file** — A file produced by `SMACreateCorelationPasswordFile` that stores a password in encrypted form rather than as plain text. Connector applications decrypt it at run time. The file is portable between machines and must be protected by file system permissions.
 
 **CorelationPassword** — The configuration parameter in connector INI files that accepts either a plain-text password or the path to an encrypted password file.

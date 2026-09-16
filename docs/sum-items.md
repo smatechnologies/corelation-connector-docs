@@ -91,14 +91,14 @@ The following example shows a posting journal with four steps, each containing a
 ### Sample command line
 
 ```
-SMASumItems.exe -xmlfilename 20120919_062026_000.ACH_Posting.xml -OwnerTag "postingRequest" -AmountTag "amount" -PropertyName myprop
+SMASumItems.exe -XMLFilename 20120919_065009_000.WRG_ACH_Posting.xml -OwnerTag "postingRequest" -AmountTag "amount" -PropertyName myprop
 ```
 
 ### Sample job output
 
 ```console
-Copyright Software Management and Associates - 2012
-Version 1.0.0.0
+Copyright Software Management and Associates - <year>
+Version <version>
 
 -XMLFilename                  : 20120919_065009_000.WRG_ACH_Posting.xml
 -OwnerTag                     : postingRequest

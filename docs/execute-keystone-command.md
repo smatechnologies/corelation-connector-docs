@@ -504,7 +504,7 @@ Exit Value : 0
 Connection details can be obtained from Corelation.
 :::
 
-- **HostName**: The DNS resolvable name or IP address of the remote system to execute the command on.
+- **HostName**: The DNS resolvable name or IP address of the remote system to run the command on.
 
 - **Port**: The port that the SSH daemon (on the remote system) is listening on.
 
@@ -523,6 +523,10 @@ Newer instances of SSH used by Corelation may not support any of the diffie-hell
 :::
 
 - **SSHMacAlgorithms**: The Mac algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
+
+:::caution
+This setting is **not currently applied**. A value set here has no effect on the algorithms the connection negotiates, and no error is reported. Do not rely on it to restrict message authentication algorithms. Contact Continuous if you need this constrained.
+:::
 
 - **SSHPublicKeyAlgorithms**: The public key algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 

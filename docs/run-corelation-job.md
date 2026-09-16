@@ -49,7 +49,7 @@ SMARunCorelationJob.exe -jobname myJob
 When `-batchqueuename leastbusy` is specified, the connector queries the Corelation API for all open batch queues and enqueues the job on the queue with the fewest pending jobs. If multiple queues are equally empty, the first one returned by the API is selected.
 
 :::note
-- The Corelation Sub-Type configuration in Solution Manager includes a checkbox to enable this option. The checkbox requires Solution Manager 25.0 or later.
+- The Corelation Sub-Type configuration in Solution Manager includes an option to enable this. The option requires Solution Manager 25.0 or later.
 - Corelation Connector version 22.4.0 or later is required to use `leastbusy` from the command line.
 - Version 22.4.3 includes a fix ensuring only open queues are considered.
 - When multiple instances run concurrently with `leastbusy`, they use a shared mutex to synchronize queue selection and job submission. Use `-queueselectionmutextimeout` to control how long each instance waits to acquire the mutex. The default is 20 minutes (1,200,000 ms).
@@ -161,6 +161,7 @@ The configuration file uses INI format. By default, `SMARunCorelationJob.exe` re
 |---|---|
 | `CorelationIPAddress` | The DNS-resolvable hostname or IP address of the Corelation server. |
 | `CorelationPort` | The port number for communication with the Corelation server. |
+| `TLSVersion` | The TLS protocol version to use when `UseSSL=true`. Accepted values: `TLS12` (TLS 1.2 only, recommended), `TLS11` (TLS 1.1 only), `TLS` (TLS 1.0 only), or `N/A` to negotiate automatically with the version the server offers. |
 | `UseSSL` | Set to `true` to enable SSL/TLS encryption. Default: `false`. |
 | `CorelationServerName` | The server name for certificate validation. Required when `UseSSL=true`. |
 | `CorelationUser` | The username for authenticating to the Corelation server. |

@@ -18,7 +18,7 @@ The Corelation Connector enables KeyStone jobs to be run from OpCon. A job can b
 - Use this connector to integrate Corelation core banking operations into a broader automated workflow.
 - Use this connector to manage KeyStone database administration tasks — backups and restores — from a single scheduling platform.
 
-The connector interface consists of the following command-line applications:
+The connector interface consists of the following command-line applications. See [Installation](./installation.md) for how to obtain them.
 
 | Application | Purpose |
 |---|---|
@@ -26,6 +26,7 @@ The connector interface consists of the following command-line applications:
 | [SMAExecuteKeystoneCommand](./execute-keystone-command.md) | Runs KeyStone administrative commands over SSH |
 | [SMACreateCorelationPasswordFile](./create-password-file.md) | Creates an encrypted password file for use in configuration files |
 | [SMASumItems](./sum-items.md) | Sums numeric fields in an XML file and stores the result as an OpCon property |
+| [SMADeleteKeyStoneFiles](./delete-keystone-files.md) | Removes KeyStone export files and their database records |
 
 ## FAQs
 
@@ -45,7 +46,7 @@ Yes. `SMARunCorelationJob` accepts either `-jobname` or `-jobserial` to identify
 Use `SMACreateCorelationPasswordFile` to create an encrypted password file, then reference that file path in the `CorelationPassword` or `Password` field of any connector configuration file.
 
 **What version of Solution Manager is required to use the leastbusy batch queue option?**
-Solution Manager 25.0 or later is required to see and use the **-BatchQueueName leastbusy** checkbox in the Corelation Sub-Type configuration. Corelation Connector version 22.4.0 or later is required to use the option from the command line.
+Solution Manager 25.0 or later is required to see and use the **-BatchQueueName leastbusy** option in the Corelation Sub-Type configuration. Corelation Connector version 22.4.0 or later is required to use the option from the command line.
 
 ## Glossary
 

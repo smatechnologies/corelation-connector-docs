@@ -1,4 +1,10 @@
 ---
+title: Corelation Connector
+description: "Run and monitor Corelation KeyStone jobs and administrative commands from OpCon: installation, configuration, and program reference."
+tags:
+  - Conceptual
+  - System Administrator
+  - Corelation Connector
 slug: '/'
 hide_table_of_contents: true
 displayed_sidebar: null
@@ -17,6 +23,7 @@ The Corelation Connector enables KeyStone jobs to be run from OpCon.
 ### Overview
 
 - [Overview](./overview.md)
+- [Installation](./installation.md)
 - [Release Notes](./release-notes.md)
 
 </div>
@@ -33,6 +40,7 @@ The Corelation Connector enables KeyStone jobs to be run from OpCon.
 - [SMAExecuteKeystoneCommand](./execute-keystone-command.md)
 - [SMACreateCorelationPasswordFile](./create-password-file.md)
 - [SMASumItems](./sum-items.md)
+- [SMADeleteKeyStoneFiles](./delete-keystone-files.md)
 
 </div>
 
