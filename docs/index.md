@@ -40,7 +40,6 @@ The Corelation Connector enables KeyStone jobs to be run from OpCon.
 - [SMAExecuteKeystoneCommand](./execute-keystone-command.md)
 - [SMACreateCorelationPasswordFile](./create-password-file.md)
 - [SMASumItems](./sum-items.md)
-- [SMADeleteKeyStoneFiles](./delete-keystone-files.md)
 
 </div>
 

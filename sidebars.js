@@ -7,6 +7,5 @@ module.exports = {
     'execute-keystone-command',
     'create-password-file',
     'sum-items',
-    'delete-keystone-files',
   ],
 };

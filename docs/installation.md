@@ -30,7 +30,6 @@ To install the Corelation Connector, complete the following steps:
 |---|---|
 | `SMARunCorelationJob.exe` | Starts and monitors a KeyStone batch job. See [SMARunCorelationJob](./run-corelation-job.md). |
 | `SMAExecuteKeystoneCommand.exe` | Runs KeyStone administrative commands over SSH. See [SMAExecuteKeystoneCommand](./execute-keystone-command.md). |
-| `SMADeleteKeyStoneFiles.exe` | Removes KeyStone export files and their database records. See [SMADeleteKeyStoneFiles](./delete-keystone-files.md). |
 | `SMASumItems.exe` | Sums numeric fields in an XML file and stores the total as an OpCon property. See [SMASumItems](./sum-items.md). |
 | `SMACreateCorelationPasswordFile.exe` | Creates an encrypted password file for use in configuration files. See [SMACreateCorelationPasswordFile](./create-password-file.md). |
 | `SMATechnicalServicesUtilities.dll` | Shared library used by the programs. Keep it alongside them. |
@@ -45,7 +44,7 @@ No. The programs are independent and share only the support library. Install the
 
 **Where do the configuration files go?**
 
-In the same directory as the program, unless a program documents a way to point elsewhere. `SMADeleteKeyStoneFiles` accepts a `-ConfigFile` argument for this.
+In the same directory as the program, unless that program's page documents a way to point elsewhere.
 
 **Does the archive contain anything else?**
 

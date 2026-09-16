@@ -26,7 +26,6 @@ The connector interface consists of the following command-line applications. See
 | [SMAExecuteKeystoneCommand](./execute-keystone-command.md) | Runs KeyStone administrative commands over SSH |
 | [SMACreateCorelationPasswordFile](./create-password-file.md) | Creates an encrypted password file for use in configuration files |
 | [SMASumItems](./sum-items.md) | Sums numeric fields in an XML file and stores the result as an OpCon property |
-| [SMADeleteKeyStoneFiles](./delete-keystone-files.md) | Removes KeyStone export files and their database records |
 
 ## FAQs
 
