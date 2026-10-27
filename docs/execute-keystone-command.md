@@ -524,8 +524,28 @@ Newer instances of SSH used by Corelation may not support any of the diffie-hell
 
 - **SSHMacAlgorithms**: The Mac algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
 
-:::caution
-This setting is **not currently applied**. A value set here has no effect on the algorithms the connection negotiates, and no error is reported. Do not rely on it to restrict message authentication algorithms. Contact Continuous if you need this constrained.
+:::caution Spell this key `SSHMacAlgoritms` in the current release
+
+SMAExecuteKeystoneCommand reads this setting under the misspelled key `SSHMacAlgoritms`,
+without the second `h`. A line spelled `SSHMacAlgorithms` is ignored, the connection falls
+back to the SSH library's default MAC list, and no error or warning is reported.
+
+Set both spellings to the same value, as the example configuration file below does. The
+misspelled key takes effect now, and the correctly spelled key takes effect once the fix in
+CON-2434 ships in Corelation 26.0.3:
+
+```
+SSHMacAlgorithms=<your approved list>
+SSHMacAlgoritms=<your approved list>
+```
+
+To confirm which list a run used, find the configuration dump in the job output. A line
+reading `SSHMacAlgoritms : <default>` means the tool ran with the library defaults and any
+list in the configuration file was ignored.
+
+SMADeleteKeyStoneFiles reads the same misspelled key in its `[SSH Connection Parameters]`
+section and needs the same pair of lines.
+
 :::
 
 - **SSHPublicKeyAlgorithms**: The public key algorithms to select from that can be negotiated for the connection.  The supported protocols are shown below.  The specification should be in the form of a comma separated string.
@@ -571,6 +591,7 @@ UserName=youruser
 Password=.\yourpasswordfile.pw
 SSHEncryptionAlgorithms=aes256-ctr,aes192-ctr,aes128-ctr,aes256-cbc,aes192-cbc,aes128-cbc,3des-ctr,3des-cbc,blowfish-cbc,arcfour256,arcfour128,arcfour,cast128-cbc,aes256-gcm@openssh.com,aes128-gcm@openssh.com,chacha20-poly1305@openssh.com
 SSHKeyExchangeAlgorithms=curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group14-sha256,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,ecdh-sha2-nistp256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp384,ecdh-sha2-nistp521
+SSHMacAlgorithms=hmac-sha2-256,hmac-sha2-512,hmac-sha1,hmac-md5,hmac-ripemd160,hmac-sha1-96,hmac-md5-96,hmac-sha2-256-96,hmac-sha2-512-96,hmac-ripemd160-96,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
 SSHMacAlgoritms=hmac-sha2-256,hmac-sha2-512,hmac-sha1,hmac-md5,hmac-ripemd160,hmac-sha1-96,hmac-md5-96,hmac-sha2-256-96,hmac-sha2-512-96,hmac-ripemd160-96,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
 SSHPublicKeyAlgorithms=ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa,ssh-dss,x509v3-sign-rsa,x509v3-sign-dss
 
